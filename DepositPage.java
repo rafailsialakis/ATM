@@ -166,61 +166,63 @@ public class DepositPage extends JFrame{
         proceedButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                try 
-                {
-                    String line;
-                    FileReader fr = new FileReader("credentials.txt");
-                    BufferedReader br = new BufferedReader(fr);
-                    int linecount = 0;
-                    int line_that_interests_us = 0;
+				if (!DepositArea.getText().equals("") && !DepositArea.getText().equals("0") && !DepositArea.getText().equals("00") && !DepositArea.getText().equals("000") && !DepositArea.getText().equals("0000"))
+				{
+					try 
+					{
+						String line;
+						FileReader fr = new FileReader("credentials.txt");
+						BufferedReader br = new BufferedReader(fr);
+						int linecount = 0;
+						int line_that_interests_us = 0;
 
-                    while ((line = br.readLine()) != null)
-                    {
-                        parts = line.split(",");	//Separate the line
-                        if (parts[8].equals(id))	//Check if the id we passed from the constructor is equal to the id in the file
-                        {
-                            line_that_interests_us = linecount;
-                            break;
-                        }
-                        linecount++;
-                    }
-                    br.close();
-                    linecount = 0;
-                    BufferedReader br2 = new BufferedReader(new FileReader("credentials.txt"));	//Same technique with two files
-                    FileWriter fw = new FileWriter("temp.txt", false);
-                    
-                    try (BufferedWriter bw = new BufferedWriter(fw)) {
-                        while((line = br2.readLine()) != null)
-                        {
-                            if (linecount != line_that_interests_us)
-                            {
-                                bw.write(line + "\n");	//write every line except the one that interests us
-                            }
-                            linecount++;
-                        }
-						new_balance = Float.parseFloat(parts[7])+Float.parseFloat(DepositArea.getText()); 
-                        String new_balance_string = Float.toString(new_balance);
+						while ((line = br.readLine()) != null)
+						{
+							parts = line.split(",");	//Separate the line
+							if (parts[8].equals(id))	//Check if the id we passed from the constructor is equal to the id in the file
+							{
+								line_that_interests_us = linecount;
+								break;
+							}
+							linecount++;
+						}
+						br.close();
+						linecount = 0;
+						BufferedReader br2 = new BufferedReader(new FileReader("credentials.txt"));	//Same technique with two files
+						FileWriter fw = new FileWriter("temp.txt", false);
 						
-						bw.write(parts[0] + "," + parts[1] + "," + parts[2] + "," + parts[3] + "," + parts[4] + "," + parts[5] + "," + parts[6] + "," + new_balance_string + "," + id + "\n");
-                        
-                        br2.close();
-                        File toDelete = new File("credentials.txt");
-                        File toReplace = new File("temp.txt");
-                        toReplace.renameTo(toDelete);
-                        toReplace.delete();
-                        JOptionPane.showMessageDialog(frame, "Your " + Integer.parseInt(DepositArea.getText()) + "$ has been deposited");
-						DepositArea.setText("");
-                    }
-                } 
-                catch (FileNotFoundException e1) 
-                {
-                    e1.printStackTrace();
-                } 
-                catch (IOException e1) 
-                {
-                    e1.printStackTrace();
-                }
-                
+						try (BufferedWriter bw = new BufferedWriter(fw)) {
+							while((line = br2.readLine()) != null)
+							{
+								if (linecount != line_that_interests_us)
+								{
+									bw.write(line + "\n");	//write every line except the one that interests us
+								}
+								linecount++;
+							}
+							new_balance = Float.parseFloat(parts[7])+Float.parseFloat(DepositArea.getText()); 
+							String new_balance_string = Float.toString(new_balance);
+							
+							bw.write(parts[0] + "," + parts[1] + "," + parts[2] + "," + parts[3] + "," + parts[4] + "," + parts[5] + "," + parts[6] + "," + new_balance_string + "," + id + "\n");
+							
+							br2.close();
+							File toDelete = new File("credentials.txt");
+							File toReplace = new File("temp.txt");
+							toReplace.renameTo(toDelete);
+							toReplace.delete();
+							JOptionPane.showMessageDialog(frame, "Your " + Integer.parseInt(DepositArea.getText()) + "$ has been deposited");
+							DepositArea.setText("");
+						}
+					} 
+					catch (FileNotFoundException e1) 
+					{
+						e1.printStackTrace();
+					} 
+					catch (IOException e1) 
+					{
+						e1.printStackTrace();
+					}
+				}
             }
         });
 

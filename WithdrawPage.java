@@ -167,78 +167,81 @@ public class WithdrawPage extends JFrame{
         proceedButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                if (Integer.parseInt(withdrawArea.getText()) <= 500)	//The user can withdraw as much as 500$ a time
-                {
-                    try 
-                    {
-                        String line;	//The line we are going to read
-                        FileReader fr = new FileReader("credentials.txt");	//FileReader
-                        BufferedReader br = new BufferedReader(fr);	//BufferedReader
-                        int linecount = 0;	//Count the lines of the file
-                        int line_that_interests_us = 0;	//This is the line that we will change
+				if (!withdrawArea.getText().equals("") && !withdrawArea.getText().equals("0") && !withdrawArea.getText().equals("00") && !withdrawArea.getText().equals("000") && !withdrawArea.getText().equals("0000"))	//This performs only if the user has entered a correct amount
+				{
+					if (Integer.parseInt(withdrawArea.getText()) <= 500)	//The user can withdraw as much as 500$ a time
+					{
+						try 
+						{
+							String line;	//The line we are going to read
+							FileReader fr = new FileReader("credentials.txt");	//FileReader
+							BufferedReader br = new BufferedReader(fr);	//BufferedReader
+							int linecount = 0;	//Count the lines of the file
+							int line_that_interests_us = 0;	//This is the line that we will change
 
-                        while ((line = br.readLine()) != null)	//Read the file line by line
-                        {
-                            parts = line.split(",");	//Split the line into parts separated by comma ","
-                            if (parts[8].equals(id))	//Check if the ID of the user who entered the WithdrawPage is the same with the one in the file
-                            {
-                                line_that_interests_us = linecount;	//Then this is the line that interests us
-                                break;	//Exit the loop in order to keep the parts[] array unchanged
-                            }
-                            linecount++;	//Add 1 every time in the linecount
-                        }
-                        br.close();	//Close the BufferedReader
-                        linecount = 0;	//Reset the lineCount
-                        BufferedReader br2 = new BufferedReader(new FileReader("credentials.txt"));		//Create a new BufferedReader
-                        FileWriter fw = new FileWriter("temp.txt", false);	//Create a new FileWriter for a temp.txt file as we did in the ForgotPinPage()
-                        if (Float.parseFloat(parts[7]) < Integer.parseInt(withdrawArea.getText()))	//If the amount we entered is more than the amount available in our bank account
-                        {
-                            JOptionPane.showMessageDialog(frame, "You don't have enough money in your bank account");
-							withdrawArea.setText("");	//Empty the withDrawArea
-                        } 
-                        else
-                        {
-                            try (BufferedWriter bw = new BufferedWriter(fw)) {	//Read the file line by line
-                                while((line = br2.readLine()) != null)
-                                {
-                                    if (linecount != line_that_interests_us)	//Don't write the line that interests us, write it alone in the end
-                                    {
-                                        bw.write(line + "\n");
-                                    }
-                                    linecount++;	//Add 1 every time to the line count
-                                }
-								new_balance = Float.parseFloat(parts[7]) - Float.parseFloat(withdrawArea.getText());	//The new balance is the amount we had in our account minus the amount we inserted
-								String new_balance_string = Float.toString(new_balance);	//We convert into a String to write in the file (not necessary)
-								//We write the line last in the file with the new balance
-                                bw.write(parts[0] + "," + parts[1] + "," + parts[2] + "," + parts[3] + "," + parts[4] + "," + parts[5] + "," + parts[6] + "," + new_balance_string + "," + id + "\n");
-                                
-                                br2.close();	//Close the bufferedReader
-                                File toDelete = new File("credentials.txt");	//Create a file toDelete and a toReplace
-                                File toReplace = new File("temp.txt");
-                                toReplace.renameTo(toDelete);	//Rename the temp file into credentials.txt
-                                toReplace.delete();	//Delete the old credentials.txt
-                                JOptionPane.showMessageDialog(frame, "Your " + Integer.parseInt(withdrawArea.getText()) + "$ has been withdrawn");	//Print a message to ensure the user that his amount has been withdrawn
-								withdrawArea.setText("");	//Reset the textArea
-                            }
-                        }
+							while ((line = br.readLine()) != null)	//Read the file line by line
+							{
+								parts = line.split(",");	//Split the line into parts separated by comma ","
+								if (parts[8].equals(id))	//Check if the ID of the user who entered the WithdrawPage is the same with the one in the file
+								{
+									line_that_interests_us = linecount;	//Then this is the line that interests us
+									break;	//Exit the loop in order to keep the parts[] array unchanged
+								}
+								linecount++;	//Add 1 every time in the linecount
+							}
+							br.close();	//Close the BufferedReader
+							linecount = 0;	//Reset the lineCount
+							BufferedReader br2 = new BufferedReader(new FileReader("credentials.txt"));		//Create a new BufferedReader
+							FileWriter fw = new FileWriter("temp.txt", false);	//Create a new FileWriter for a temp.txt file as we did in the ForgotPinPage()
+							if (Float.parseFloat(parts[7]) < Integer.parseInt(withdrawArea.getText()))	//If the amount we entered is more than the amount available in our bank account
+							{
+								JOptionPane.showMessageDialog(frame, "You don't have enough money in your bank account");
+								withdrawArea.setText("");	//Empty the withDrawArea
+							} 
+							else
+							{
+								try (BufferedWriter bw = new BufferedWriter(fw)) {	//Read the file line by line
+									while((line = br2.readLine()) != null)
+									{
+										if (linecount != line_that_interests_us)	//Don't write the line that interests us, write it alone in the end
+										{
+											bw.write(line + "\n");
+										}
+										linecount++;	//Add 1 every time to the line count
+									}
+									new_balance = Float.parseFloat(parts[7]) - Float.parseFloat(withdrawArea.getText());	//The new balance is the amount we had in our account minus the amount we inserted
+									String new_balance_string = Float.toString(new_balance);	//We convert into a String to write in the file (not necessary)
+									//We write the line last in the file with the new balance
+									bw.write(parts[0] + "," + parts[1] + "," + parts[2] + "," + parts[3] + "," + parts[4] + "," + parts[5] + "," + parts[6] + "," + new_balance_string + "," + id + "\n");
+									
+									br2.close();	//Close the bufferedReader
+									File toDelete = new File("credentials.txt");	//Create a file toDelete and a toReplace
+									File toReplace = new File("temp.txt");
+									toReplace.renameTo(toDelete);	//Rename the temp file into credentials.txt
+									toReplace.delete();	//Delete the old credentials.txt
+									JOptionPane.showMessageDialog(frame, "Your " + Integer.parseInt(withdrawArea.getText()) + "$ has been withdrawn");	//Print a message to ensure the user that his amount has been withdrawn
+									withdrawArea.setText("");	//Reset the textArea
+								}
+							}
 
-                    } 
-					//Exception Handling
-                    catch (FileNotFoundException e1) 
-                    {
-                        e1.printStackTrace();
-                    } 
-                    catch (IOException e1) 
-                    {
-                        e1.printStackTrace();
-                    }
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(frame, "The limit to withdraw is 500$");	//Message if the user wants to withdraw more than 500$
-					withdrawArea.setText("");	//Reset the textArea
-                }
-            }
+						} 
+						//Exception Handling
+						catch (FileNotFoundException e1) 
+						{
+							e1.printStackTrace();
+						} 
+						catch (IOException e1) 
+						{
+							e1.printStackTrace();
+						}
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(frame, "The limit to withdraw is 500$");	//Message if the user wants to withdraw more than 500$
+						withdrawArea.setText("");	//Reset the textArea
+					}
+				}
+			}
         });
 
 		exit_button.addActionListener(new ActionListener() {

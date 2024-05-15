@@ -109,18 +109,6 @@ public class newAccountPage extends JFrame{
                     gender = (String)gender_field.getSelectedItem();    //Cast needed for the JComboBox
                     
                     int id = 0; //Start enumerating id's for every user who registers
-                    try {
-                        BufferedReader br = new BufferedReader(new FileReader("credentials.txt"));  //read the file
-                        while ((br.readLine()) != null) //while the filepointer is not null or count the users
-                        {
-                            id++;   //add 1 for every user
-                        }
-                        br.close();     //close the BufferedReader
-                    } catch (FileNotFoundException e1) {  //Exception Handling
-                        e1.printStackTrace();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
                     BankBalance = 0;
                     
                     try {final_password = passwordHasherandSalter(password);} //The password goes into a function that hashes and salts the password so that whoever gets access in the file cannot see the passwords 
@@ -135,6 +123,18 @@ public class newAccountPage extends JFrame{
                     try
                     {
                         FileWriter writer = new FileWriter("credentials.txt", true);    //Create a file Writer
+                        try {
+                            BufferedReader br = new BufferedReader(new FileReader("credentials.txt"));  //read the file
+                            while ((br.readLine()) != null) //while the filepointer is not null or count the users
+                            {
+                                id++;   //add 1 for every user
+                            }
+                            br.close();     //close the BufferedReader
+                        } catch (FileNotFoundException e1) {  //Exception Handling
+                            e1.printStackTrace();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                         try (BufferedWriter out = new BufferedWriter(writer)) {         //Buffered Writer
                             //Add everything the user inputs plus his identical ID
                             out.write(PIN + "," + first_name + "," + last_name + "," + id_number + "," + email + "," + gender + "," + final_password + "," + BankBalance + "," + id + "\n");

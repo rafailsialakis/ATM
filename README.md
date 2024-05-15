@@ -17,7 +17,7 @@
     </ul>
     <h2>Getting Started</h2>
     <ol>
-        <li><strong>Clone the Repository:</strong> <code>git clone https://github.com/yourusername/java-atm.git</code></li>
+        <li><strong>Clone the Repository:</strong> <code>git clone https://github.com/rafailsialakis/java-atm.git</code></li>
         <li><strong>Navigate to the Project Directory:</strong> <code>cd java-atm</code></li>
         <li><strong>Compile the Java Files:</strong> <code>javac *.java</code></li>
         <li><strong>Run the Main Program:</strong> <code>java ATMSystem</code></li>

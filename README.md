@@ -30,10 +30,6 @@
         <li><strong>Follow On-Screen Instructions:</strong> The program will guide you through the selected operation.</li>
         <li><strong>Logout:</strong> To exit the program, choose the option to logout.</li>
     </ol>
-    <h2>Contributors</h2>
-    <ul>
-        <li><a href="https://github.com/rafailsialakis">Rafail Sialakis</a></li>
-    </ul>
     <h2>License</h2>
     <p>This project is licensed under the MIT License - see the <a href="(https://github.com/rafailsialakis/ATM/blob/main/LICENCE">LICENSE</a> file for details.</p>
 </body>
